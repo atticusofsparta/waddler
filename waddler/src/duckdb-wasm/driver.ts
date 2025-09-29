@@ -107,7 +107,7 @@ const createFactory = (
 
 				// Select a bundle based on browser capabilities
 				const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
-				
+
 				// Instantiate the asynchronous version of DuckDB-Wasm
 				if (!bundle.mainWorker || !bundle.mainModule) {
 					throw new Error('DuckDB WASM bundle is missing required files');

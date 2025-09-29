@@ -31,27 +31,27 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 			// In a production implementation, you'd want proper parameter binding
 			let finalQuery = query;
 			if (params && params.length > 0) {
-			// Simple parameter substitution - in production, use proper binding
-			for (const [index, param] of params.entries()) {
-				const placeholder = `$${index + 1}`;
-				let value: string;
-				if (param === null) {
-					value = 'NULL';
-				} else if (typeof param === 'string') {
-					value = `'${param.replace(/'/g, "''")}'`;
-				} else if (typeof param === 'number' || typeof param === 'bigint') {
-					value = param.toString();
-				} else if (typeof param === 'boolean') {
-					value = param ? 'TRUE' : 'FALSE';
-				} else if (param instanceof Date) {
-					value = `'${param.toISOString()}'`;
-				} else {
-					value = `'${JSON.stringify(param)}'`;
+				// Simple parameter substitution - in production, use proper binding
+				for (const [index, param] of params.entries()) {
+					const placeholder = `$${index + 1}`;
+					let value: string;
+					if (param === null) {
+						value = 'NULL';
+					} else if (typeof param === 'string') {
+						value = `'${param.replace(/'/g, "''")}'`;
+					} else if (typeof param === 'number' || typeof param === 'bigint') {
+						value = param.toString();
+					} else if (typeof param === 'boolean') {
+						value = param ? 'TRUE' : 'FALSE';
+					} else if (param instanceof Date) {
+						value = `'${param.toISOString()}'`;
+					} else {
+						value = `'${JSON.stringify(param)}'`;
+					}
+					finalQuery = finalQuery.replace(placeholder, value);
 				}
-				finalQuery = finalQuery.replace(placeholder, value);
 			}
-			}
-			
+
 			const result = await connObj.connection.query(finalQuery);
 
 			finalMetadata = {
@@ -84,7 +84,7 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 				// For array mode, we need to convert objects back to arrays
 				const rows = result.toArray();
 				const columnNames = result.schema.fields.map((field: any) => field.name);
-				
+
 				finalRes = rows.map((row: any) => {
 					return columnNames.map((name: string) => {
 						let value = row[name];
@@ -138,9 +138,9 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 					finalQuery = finalQuery.replace(placeholder, value);
 				}
 			}
-			
+
 			const result = await connObj.connection.query(finalQuery);
-			
+
 			// For WASM, we'll yield all rows at once since the API doesn't support true streaming
 			// In a real implementation, you might want to batch the results
 			if (this.options.rowMode === 'default') {
@@ -167,7 +167,7 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 				// For array mode, we need to convert objects back to arrays
 				const rows = result.toArray();
 				const columnNames = result.schema.fields.map((field: any) => field.name);
-				
+
 				for (const row of rows) {
 					const arrayRow = columnNames.map((name: string) => {
 						let value = row[name];
