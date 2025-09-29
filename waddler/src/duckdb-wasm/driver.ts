@@ -83,11 +83,9 @@ const createFactory = (
 	{
 		wasmUrl,
 		workerUrl,
-		config = {},
 	}: {
 		wasmUrl?: string;
 		workerUrl?: string;
-		config?: duckdb.DuckDBConfig;
 	},
 ) => {
 	const factory: Factory<DuckDBWasmConnectionObj> = {
@@ -102,8 +100,8 @@ const createFactory = (
 						mainWorker: workerUrl || defaultBundles.mvp.mainWorker!,
 					},
 					eh: {
-						mainModule: wasmUrl || defaultBundles.eh?.mainModule!,
-						mainWorker: workerUrl || defaultBundles.eh?.mainWorker!,
+						mainModule: wasmUrl || (defaultBundles.eh && defaultBundles.eh.mainModule) || '',
+						mainWorker: workerUrl || (defaultBundles.eh && defaultBundles.eh.mainWorker) || '',
 					},
 				};
 
@@ -148,14 +146,12 @@ export function waddler(
 	{
 		wasmUrl,
 		workerUrl,
-		config = {},
 		min = 1,
 		max = 1,
 		logger,
 	}: {
 		wasmUrl?: string;
 		workerUrl?: string;
-		config?: duckdb.DuckDBConfig;
 		min?: number;
 		max?: number;
 	} & WaddlerConfig,
@@ -163,7 +159,6 @@ export function waddler(
 	const factory = createFactory({
 		wasmUrl,
 		workerUrl,
-		config,
 	});
 	const options = {
 		max, // maximum size of the pool

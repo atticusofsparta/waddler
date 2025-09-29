@@ -68,7 +68,14 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 					// Copy all enumerable properties from StructRow to plain object
 					for (const key in row) {
 						if (Object.prototype.hasOwnProperty.call(row, key)) {
-							plainObj[key] = row[key];
+							let value = row[key];
+							// Convert Arrow Vector objects to plain JavaScript arrays
+							if (value && typeof value === 'object' && value.toArray) {
+								const arrayValue = value.toArray();
+								// Convert typed arrays to regular arrays
+								value = Array.isArray(arrayValue) ? arrayValue : [...arrayValue];
+							}
+							plainObj[key] = value;
 						}
 					}
 					return plainObj;
@@ -79,7 +86,14 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 				const columnNames = result.schema.fields.map((field: any) => field.name);
 				
 				finalRes = rows.map((row: any) => {
-					return columnNames.map((name: string) => row[name]);
+					return columnNames.map((name: string) => {
+						let value = row[name];
+						// Convert Arrow Vector objects to plain JavaScript arrays
+						if (value && typeof value === 'object' && value.toArray) {
+							value = value.toArray();
+						}
+						return value;
+					});
 				});
 			}
 		} catch (error) {
@@ -137,7 +151,14 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 					// Copy all enumerable properties from StructRow to plain object
 					for (const key in row) {
 						if (Object.prototype.hasOwnProperty.call(row, key)) {
-							plainObj[key] = row[key];
+							let value = row[key];
+							// Convert Arrow Vector objects to plain JavaScript arrays
+							if (value && typeof value === 'object' && value.toArray) {
+								const arrayValue = value.toArray();
+								// Convert typed arrays to regular arrays
+								value = Array.isArray(arrayValue) ? arrayValue : [...arrayValue];
+							}
+							plainObj[key] = value;
 						}
 					}
 					yield plainObj as T;
@@ -148,7 +169,14 @@ export class DuckdbWasmSQLTemplate<T> extends SQLTemplate<T> {
 				const columnNames = result.schema.fields.map((field: any) => field.name);
 				
 				for (const row of rows) {
-					const arrayRow = columnNames.map((name: string) => row[name]);
+					const arrayRow = columnNames.map((name: string) => {
+						let value = row[name];
+						// Convert Arrow Vector objects to plain JavaScript arrays
+						if (value && typeof value === 'object' && value.toArray) {
+							value = value.toArray();
+						}
+						return value;
+					});
 					yield arrayRow as T;
 				}
 			}

@@ -8,19 +8,31 @@ export default defineConfig({
 	optimizeDeps: {
 		exclude: ['@duckdb/duckdb-wasm']
 	},
+	server: {
+		fs: {
+			allow: ['..', './public']
+		}
+	},
 	test: {
 		browser: {
 			enabled: true,
 			provider: 'playwright',
-			name: 'chromium',
-			providerOptions: {
-				launch: {
-					args: [
-						'--enable-features=SharedArrayBuffer',
-						'--disable-web-security',
-						'--disable-features=VizDisplayCompositor'
-					]
+			instances: [
+				{
+					browser: 'chromium',
+					launchOptions: {
+						args: [
+							'--enable-features=SharedArrayBuffer',
+							'--disable-web-security',
+							'--disable-features=VizDisplayCompositor',
+							'--allow-running-insecure-content',
+							'--disable-site-isolation-trials'
+						]
+					}
 				}
+			],
+			fileServe: {
+				'/duckdb-wasm': './public/duckdb-wasm'
 			}
 		},
 		include: [

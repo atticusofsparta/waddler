@@ -5,9 +5,9 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "vitest --config ./vitest.config.ts",
-		"test:browser": "vitest --config ./vitest.browser.config.ts",
-		"test:duckdb-wasm": "vitest --config ./vitest.browser.config.ts tests/duckdb-wasm/waddler.browser.test.ts",
-		"test:duckdb-wasm-simple": "vitest --config ./vitest.browser.config.ts tests/duckdb-wasm/waddler.simple.test.ts",
+		"test:browser": "vitest --config ./vitest.browser.config.ts --browser.headless",
+		"test:duckdb-wasm": "vitest --config ./vitest.browser.config.ts --browser.headless tests/duckdb-wasm/waddler.browser.test.ts",
+		"test:duckdb-wasm-simple": "vitest --config ./vitest.browser.config.ts --browser.headless tests/duckdb-wasm/waddler.simple.test.ts",
 		"test:bun": "bun test bun"
 	},
 	"dependencies": {
