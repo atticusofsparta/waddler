@@ -11,3 +11,10 @@ export * from './sql.ts';
 export { SqliteDialect } from './sqlite/sqlite-core/dialect.ts';
 export type { SqliteIdentifierObject } from './sqlite/sqlite-core/dialect.ts';
 export * from './types.ts';
+
+// Database drivers
+export * as clickhouse from './clickhouse/index.ts';
+export * as duckdbNeo from './duckdb-neo/index.ts';
+export * as duckdbWasm from './duckdb-wasm/index.ts';
+export * as duckdb from './duckdb/index.ts';
+export * as gel from './gel/index.ts';

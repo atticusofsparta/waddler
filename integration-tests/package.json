@@ -5,6 +5,9 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "vitest --config ./vitest.config.ts",
+		"test:browser": "vitest --config ./vitest.browser.config.ts --browser.headless",
+		"test:duckdb-wasm": "vitest --config ./vitest.browser.config.ts --browser.headless tests/duckdb-wasm/waddler.browser.test.ts",
+		"test:duckdb-wasm-simple": "vitest --config ./vitest.browser.config.ts --browser.headless tests/duckdb-wasm/waddler.simple.test.ts",
 		"test:bun": "bun test bun"
 	},
 	"dependencies": {
@@ -57,9 +60,14 @@
 		"tsup": "8.4.0",
 		"tsx": "4.19.1",
 		"typescript": "5.5.4",
-		"vitest": "3.1.1",
 		"waddler": "workspace:../waddler/dist",
 		"wrangler": "4.13.0",
 		"zx": "8.1.9"
+	},
+	"devDependencies": {
+		"@duckdb/duckdb-wasm": "^1.29.0",
+		"@vitest/browser": "^3.2.4",
+		"playwright": "^1.55.1",
+		"vitest": "3.2.4"
 	}
 }

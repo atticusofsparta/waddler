@@ -3,6 +3,7 @@ import 'zx/globals';
 const entries: Array<string> = [
 	'src/duckdb/index.ts',
 	'src/duckdb-neo/index.ts',
+	'src/duckdb-wasm/index.ts',
 	'src/pg/node-postgres/index.ts',
 	'src/pg/postgres-js/index.ts',
 	'src/pg/pglite/index.ts',

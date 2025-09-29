@@ -14,15 +14,31 @@ choose - whether it's a simple TCP connection or an HTTP-based DB client.
 
 We support all the dialects and drivers that [Drizzle](https://orm.drizzle.team/docs/get-started) supports
 
-You can check a full list of clients you can use - [here](/docs/get-started)
+**Supported Clients:**
+- **PostgreSQL**: `node-postgres`, `postgres-js`, `pglite`, `neon-http`, `neon-serverless`, `vercel-postgres`, `xata-http`, `bun-sql`
+- **MySQL**: `mysql2`, `tidb-serverless`, `planetscale-serverless`
+- **SQLite**: `better-sqlite3`, `bun-sqlite`, `d1`, `libsql`, `durable-sqlite`, `op-sqlite`, `expo-sqlite`
+- **DuckDB**: `duckdb`, `duckdb-neo`, `duckdb-wasm` (browser support)
+- **ClickHouse**: `clickhouse`
+- **Other**: `gel`
 
 ```ts
 import { waddler } from "waddler/node-postgres";
 import { waddler } from "waddler/mysql2";
 import { waddler } from "waddler/libsql";
+import { waddler } from "waddler/duckdb-wasm";
+import { waddler } from "waddler/duckdb-neo";
+import { waddler } from "waddler/duckdb";
 
+// Node.js/Server environments
 const sql = waddler({ dbUrl: process.env.DB_URL });
-const sql = waddler();
+const sql = waddler({ url: "./database.db" });
+
+// Browser environments (DuckDB WASM)
+const sql = waddler({ 
+  wasmUrl: '/path/to/duckdb.wasm',
+  workerUrl: '/path/to/worker.js'
+});
 
 // promisified SQL template API
 const result = await sql`select * from users`;
